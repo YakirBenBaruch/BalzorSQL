@@ -1,0 +1,211 @@
+﻿@page "/INSERT"
+@using MySql.Data.MySqlClient;
+
+<style>
+    /* ====== Full page layout ====== */
+    :root{
+      --bg1:#070b14;
+      --bg2:#0b1220;
+      --card: rgba(15, 23, 42, 0.74);
+      --border: rgba(148, 163, 184, 0.22);
+      --text:#e5e7eb;
+      --muted: rgba(226, 232, 240, 0.60);
+      --accent:#6366f1;
+      --accent2:#4f46e5;
+      --ok:#22c55e;
+      --bad:#ef4444;
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+    }
+
+    html, body{
+      height:100%;
+    }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 650px at 18% 10%, rgba(99,102,241,.18), transparent 60%),
+        radial-gradient(1000px 520px at 88% 18%, rgba(16,185,129,.13), transparent 55%),
+        radial-gradient(900px 500px at 70% 90%, rgba(244,63,94,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg2) 0%, var(--bg1) 100%);
+      display:grid;
+      place-items:center;
+      padding: 28px 16px;
+    }
+
+    /* subtle grid overlay */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
+      background-size: 22px 22px;
+      opacity: .32;
+    }
+
+    /* ====== Center card (no markup changes: we wrap via ::after on body) ====== */
+    /* We can’t add a div wrapper without changing HTML, so we create a "card" background
+       behind the form controls by using a fixed/centered pseudo element. */
+    body::after{
+      content:"";
+      position:fixed;
+      left:50%;
+      top:50%;
+      transform: translate(-50%, -50%);
+      width: min(560px, 92vw);
+      height: 430px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(2,6,23,.72));
+      border: 1px solid rgba(148,163,184,.18);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      z-index: -1;
+    }
+
+    /* ====== Title + subtitle (generated, no HTML change) ====== */
+    /* Title */
+    input[type="text"]:first-of-type{
+      position: relative;
+      margin-top: 62px !important;
+    }
+
+    input[type="text"]:first-of-type::before{
+      content:"Create account";
+      position:absolute;
+      left: 2px;
+      top: -56px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: var(--text);
+    }
+
+    /* Subtitle */
+    input[type="text"]:first-of-type::after{
+      content:"Enter your details to insert a new user into the database";
+      position:absolute;
+      left: 2px;
+      top: -30px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ====== Controls ====== */
+    input, button{
+      box-sizing:border-box;
+    }
+
+    input[type="text"]{
+      width: min(520px, 92vw);
+      display:block;
+      margin: 12px auto;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.66);
+      color: var(--text);
+      outline:none;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .08s ease, background .15s ease;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+    }
+
+    input[type="text"]::placeholder{
+      color: var(--muted);
+    }
+
+    input[type="text"]:focus{
+      border-color: rgba(99,102,241,0.65);
+      background: rgba(15, 23, 42, 0.80);
+      box-shadow:
+        0 0 0 4px rgba(99,102,241,0.22),
+        0 16px 40px rgba(0,0,0,0.38);
+      transform: translateY(-1px);
+    }
+
+    /* ====== Button ====== */
+    button{
+      width: min(520px, 92vw);
+      display:block;
+      margin: 16px auto 0;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(99,102,241,0.45);
+      background: linear-gradient(180deg, rgba(99,102,241,0.95), rgba(79,70,229,0.95));
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.2px;
+      cursor:pointer;
+      transition: transform .08s ease, box-shadow .15s ease, filter .15s ease;
+      box-shadow:
+        0 18px 40px rgba(79,70,229,0.26),
+        0 10px 22px rgba(0,0,0,0.38);
+    }
+
+    button:hover{
+      filter: brightness(1.05);
+      box-shadow:
+        0 22px 52px rgba(79,70,229,0.32),
+        0 12px 26px rgba(0,0,0,0.40);
+    }
+
+    button:active{
+      transform: translateY(1px);
+    }
+
+    /* ====== Small helper text under button (generated) ====== */
+    button::after{
+      content:"Tip: Use strong passwords and valid email formats";
+      display:block;
+      margin-top:10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(226,232,240,.55);
+    }
+
+    /* ====== Responsive ====== */
+      media (max-width: 480px){
+      body::after{ height: 455px; border-radius: 18px; }
+      input[type="text"], button{ border-radius: 12px; padding: 13px 12px; }
+      input[type="text"]:first-of-type{ margin-top: 66px !important; }
+    }
+</style>
+
+<input type="text" @bind="userName" placeholder="Enter your name" />
+<input type="text" @bind="userPassword" placeholder="Enter your password" />
+<input type="text" @bind="userEmail" placeholder="Enter your email" />
+<input type="text" @bind="usernickName" placeholder="Enter your nickname" />
+<button @onclick="INSERT">Submit</button>
+
+@code
+{
+    string userName = "";
+    string userEmail = "";
+    string usernickName = "";
+    string userPassword;
+
+
+    void INSERT()
+    {
+        MySqlConnection con = new MySqlConnection();
+        con.ConnectionString = "server=localhost;user id =root;password=josh17rog;database=yakir_trading_app";
+        con.Open();
+
+        string sql = $"INSERT INTO `yakir_trading_app`.`users` (`userName`, `userPasswordl`, `userEmail`, `nickName`) VALUES ('{userName}', '{userPassword}', '{userEmail}', '{usernickName}');";
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.Connection = con;
+        cmd.CommandText = sql;
+        cmd.ExecuteNonQuery();
+        int x = cmd.ExecuteNonQuery();
+        if (x > 0)
+        {
+            Console.WriteLine("Data Inserted");
+        }
+        else
+        {
+            Console.WriteLine("Data Not Inserted");
+        }
+    }
+}

@@ -1,0 +1,51 @@
+﻿@page "/getall"
+@using MySql.Data.MySqlClient
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @while (r.Read())
+        {
+            string name = r["Username"].ToString();
+            string pass = r["UserPassword"].ToString();
+            int id = int.Parse(r["UserID"].ToString());
+            string email = r["UserEmail"].ToString();
+            string nickName = r["nickName"].ToString();
+
+            <tr>
+                <td>@id</td>
+                <td>@name</td>
+                <td>@pass</td>
+                <td>@email</td>
+                <td>@nickName</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@code
+{
+    MySqlDataReader r;
+
+    protected override void OnInitialized()
+    {
+        MySqlConnection con = new MySqlConnection();
+        con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app;";
+        con.Open();
+
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.Connection = con;
+        string sql = "SELECT * FROM `yakir_trading_app`.`users`;";
+        cmd.CommandText = sql;
+
+        r = cmd.ExecuteReader();
+    }
+}
