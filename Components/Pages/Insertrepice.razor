@@ -1,5 +1,5 @@
-﻿@page "/Login"
-@using MySql.Data.MySqlClient
+﻿@page "/InsertRepice"
+@using MySql.Data.MySqlClient;
 
 <style>
     body {
@@ -113,36 +113,41 @@
 <div class="register-page">
     <div class="register-card">
         <div class="register-header">
-            <div class="food-icon">🍳</div>
-            <h1>Recipe Register</h1>
-            <p>Create your account and start sharing delicious recipes</p>
+            <div class="food-icon">🍲</div>
+            <h1>Insert Recipe</h1>
+            <p>Add a new delicious recipe to your collection</p>
         </div>
 
         <div class="register-body">
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" @bind="userName" placeholder="Enter your username" />
+                <label>Name Of Recipe</label>
+                <input type="text" @bind="nameOfRepice" placeholder="Enter recipe name" />
             </div>
 
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" @bind="userPasswordl" placeholder="Enter your password" />
+                <label>Groceries</label>
+                <input type="text" @bind="groceries" placeholder="Enter groceries" />
             </div>
 
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" @bind="userEmail" placeholder="Enter your email" />
+                <label>Preparation Process</label>
+                <input type="text" @bind="preparationProcess" placeholder="Enter preparation process" />
             </div>
 
             <div class="form-group">
-                <label>Nickname</label>
-                <input type="text" @bind="usernickName" placeholder="Enter your nickname" />
+                <label>Preparation Tools</label>
+                <input type="text" @bind="perparationTools" placeholder="Enter preparation tools" />
             </div>
 
-            <button class="register-btn" @onclick="login">Sign Up</button>
+            <div class="form-group">
+                <label>Recipecol</label>
+                <input type="text" @bind="recipecol" placeholder="Enter recipecol" />
+            </div>
+
+            <button class="register-btn" @onclick="Insertrepice">Insert Recipe</button>
 
             <div class="bottom-text">
-                Join our cooking community and discover amazing recipes
+                Save your favorite recipe and keep building your cookbook
             </div>
         </div>
     </div>
@@ -150,18 +155,20 @@
 
 @code
 {
-    string userName;
-    string userPasswordl;
-    string userEmail;
-    string usernickName;
+    string nameOfRepice;
+    string groceries;
+    string preparationProcess;
+    string perparationTools;
+    string recipecol;
 
-    void login()
+    void Insertrepice()
     {
         MySqlConnection con = new MySqlConnection();
         con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
         con.Open();
 
-        string sql = $"INSERT INTO `yakir_trading_app`.`users` (`userName`, `userPasswordl`, `userEmail`, `nickName`) VALUES ('{userName}', '{userPasswordl}', '{userEmail}', '{usernickName}');";
+        string sql = $"INSERT INTO `yakir_trading_app`.`repice` (`nameOfRepice`, `groceries`, `preparationProcess`, `perparationTools`, `recipecol`) VALUES ('{nameOfRepice}', '{groceries}', '{preparationProcess}', '{perparationTools}', '{recipecol}');";
+
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = con;
         cmd.CommandText = sql;
@@ -170,10 +177,6 @@
         if (x > 0)
         {
             Console.WriteLine("Data Inserted");
-        }
-        else
-        {
-            Console.WriteLine("Data Not Inserted");
         }
 
         con.Close();

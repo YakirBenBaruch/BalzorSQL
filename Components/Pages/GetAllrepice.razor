@@ -1,0 +1,160 @@
+﻿@page "/GetAllRepice"
+@using MySql.Data.MySqlClient;
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #fff8f0, #ffe8d6);
+    }
+
+    .page-container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 30px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 1100px;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #ff7b54, #ffb26b);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+        .card-header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .card-header p {
+            margin-top: 10px;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .show-btn {
+        padding: 14px 22px;
+        border: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #ff7b54, #ff914d);
+        color: white;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-bottom: 25px;
+    }
+
+        .show-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 123, 84, 0.3);
+        }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    th {
+        background: #ffeddf;
+        color: #444;
+        padding: 14px;
+        text-align: left;
+        font-size: 15px;
+    }
+
+    td {
+        padding: 14px;
+        border-bottom: 1px solid #f3e2d7;
+        background-color: #fffaf7;
+        font-size: 14px;
+        color: #333;
+    }
+
+    tr:hover td {
+        background-color: #fff2eb;
+    }
+
+    .empty-text {
+        text-align: center;
+        color: #777;
+        font-size: 15px;
+        margin-top: 15px;
+    }
+</style>
+
+<div class="page-container">
+    <div class="card">
+        <div class="card-header">
+            <h1>All Recipes</h1>
+            <p>View all recipes from your database</p>
+        </div>
+
+        <div class="card-body">
+            <button class="show-btn" @onclick="GetAllRepice">Show All Recipes</button>
+
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Name Of Recipe</th>
+                        <th>Groceries</th>
+                        <th>Preparation Process</th>
+                        <th>Preparation Tools</th>
+                        <th>Recipecol</th>
+                    </tr>
+
+                    @while (reader != null && reader.Read())
+                    {
+                        <tr>
+                            <td>@reader["nameOfRepice"]</td>
+                            <td>@reader["groceries"]</td>
+                            <td>@reader["preparationProcess"]</td>
+                            <td>@reader["perparationTools"]</td>
+                            <td>@reader["recipecol"]</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    MySqlConnection con = new MySqlConnection();
+    MySqlCommand cmd = new MySqlCommand();
+    MySqlDataReader reader;
+
+    void GetAllRepice()
+    {
+        con = new MySqlConnection();
+        con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
+        con.Open();
+
+        string sql = "SELECT * FROM `repice`";
+        cmd = new MySqlCommand(sql, con);
+        reader = cmd.ExecuteReader();
+    }
+}

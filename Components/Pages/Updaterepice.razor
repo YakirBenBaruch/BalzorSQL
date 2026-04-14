@@ -1,5 +1,5 @@
-﻿@page "/Login"
-@using MySql.Data.MySqlClient
+﻿@page "/UpdateRepice"
+@using MySql.Data.MySqlClient;
 
 <style>
     body {
@@ -27,7 +27,7 @@
     }
 
     .register-header {
-        background: linear-gradient(135deg, #ff7b54, #ffb26b);
+        background: linear-gradient(135deg, #4caf50, #81c784);
         color: white;
         text-align: center;
         padding: 35px 20px;
@@ -35,13 +35,7 @@
 
         .register-header h1 {
             margin: 0;
-            font-size: 36px;
-        }
-
-        .register-header p {
-            margin-top: 10px;
-            font-size: 16px;
-            opacity: 0.95;
+            font-size: 32px;
         }
 
     .register-body {
@@ -55,7 +49,6 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-size: 16px;
             font-weight: bold;
             color: #444;
         }
@@ -65,115 +58,105 @@
             padding: 14px;
             border: 2px solid #f3d2c1;
             border-radius: 14px;
-            font-size: 15px;
             background-color: #fffaf7;
-            box-sizing: border-box;
-            transition: 0.3s;
         }
-
-            .form-group input:focus {
-                outline: none;
-                border-color: #ff7b54;
-                box-shadow: 0 0 10px rgba(255, 123, 84, 0.25);
-                background-color: white;
-            }
 
     .register-btn {
         width: 100%;
         padding: 15px;
         border: none;
         border-radius: 14px;
-        background: linear-gradient(135deg, #ff7b54, #ff914d);
+        background: linear-gradient(135deg, #4caf50, #66bb6a);
         color: white;
         font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        transition: 0.3s;
-        margin-top: 10px;
     }
 
         .register-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 123, 84, 0.3);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
         }
-
-    .bottom-text {
-        text-align: center;
-        margin-top: 18px;
-        color: #777;
-        font-size: 14px;
-    }
-
-    .food-icon {
-        font-size: 42px;
-        margin-bottom: 10px;
-    }
 </style>
 
 <div class="register-page">
     <div class="register-card">
         <div class="register-header">
-            <div class="food-icon">🍳</div>
-            <h1>Recipe Register</h1>
-            <p>Create your account and start sharing delicious recipes</p>
+            <h1>Update Recipe</h1>
+            <p>Edit an existing recipe</p>
         </div>
 
         <div class="register-body">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" @bind="userName" placeholder="Enter your username" />
-            </div>
 
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" @bind="userPasswordl" placeholder="Enter your password" />
+                <label>Recipe Name (to update)</label>
+                <input type="text" @bind="nameOfRepice" placeholder="Enter existing recipe name" />
             </div>
 
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" @bind="userEmail" placeholder="Enter your email" />
+                <label>New Groceries</label>
+                <input type="text" @bind="groceries" />
             </div>
 
             <div class="form-group">
-                <label>Nickname</label>
-                <input type="text" @bind="usernickName" placeholder="Enter your nickname" />
+                <label>New Preparation Process</label>
+                <input type="text" @bind="preparationProcess" />
             </div>
 
-            <button class="register-btn" @onclick="login">Sign Up</button>
-
-            <div class="bottom-text">
-                Join our cooking community and discover amazing recipes
+            <div class="form-group">
+                <label>New Preparation Tools</label>
+                <input type="text" @bind="perparationTools" />
             </div>
+
+            <div class="form-group">
+                <label>New Recipecol</label>
+                <input type="text" @bind="recipecol" />
+            </div>
+
+            <button class="register-btn" @onclick="UpdateRepice">
+                Update Recipe
+            </button>
+
         </div>
     </div>
 </div>
 
 @code
 {
-    string userName;
-    string userPasswordl;
-    string userEmail;
-    string usernickName;
+    string nameOfRepice;
+    string groceries;
+    string preparationProcess;
+    string perparationTools;
+    string recipecol;
 
-    void login()
+    void UpdateRepice()
     {
         MySqlConnection con = new MySqlConnection();
         con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
         con.Open();
 
-        string sql = $"INSERT INTO `yakir_trading_app`.`users` (`userName`, `userPasswordl`, `userEmail`, `nickName`) VALUES ('{userName}', '{userPasswordl}', '{userEmail}', '{usernickName}');";
+        string sql = $@"
+        UPDATE `repice`
+        SET
+            `groceries` = '{groceries}',
+            `preparationProcess` = '{preparationProcess}',
+            `perparationTools` = '{perparationTools}',
+            `recipecol` = '{recipecol}'
+        WHERE `nameOfRepice` = '{nameOfRepice}'";
+
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = con;
         cmd.CommandText = sql;
 
         int x = cmd.ExecuteNonQuery();
+
         if (x > 0)
         {
-            Console.WriteLine("Data Inserted");
+            Console.WriteLine("Recipe Updated");
         }
         else
         {
-            Console.WriteLine("Data Not Inserted");
+            Console.WriteLine("Recipe Not Found");
         }
 
         con.Close();

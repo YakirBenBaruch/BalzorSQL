@@ -1,0 +1,131 @@
+﻿@page "/DeleteRepice"
+@using MySql.Data.MySqlClient;
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #fff8f0, #ffe8d6);
+    }
+
+    .register-page {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: 500px;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        overflow: hidden;
+    }
+
+    .register-header {
+        background: linear-gradient(135deg, #ff4d4d, #ff7b54);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+        .register-header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+    .register-body {
+        padding: 35px 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #f3d2c1;
+            border-radius: 14px;
+            background-color: #fffaf7;
+        }
+
+    .register-btn {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #ff4d4d, #ff7b54);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 77, 77, 0.3);
+        }
+</style>
+
+<div class="register-page">
+    <div class="register-card">
+        <div class="register-header">
+            <h1>Delete Recipe</h1>
+            <p>Remove a recipe from your database</p>
+        </div>
+
+        <div class="register-body">
+            <div class="form-group">
+                <label>Recipe Name</label>
+                <input type="text" @bind="nameOfRepice" placeholder="Enter recipe name to delete" />
+            </div>
+
+            <button class="register-btn" @onclick="DeleteRepice">
+                Delete Recipe
+            </button>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    string nameOfRepice;
+
+    void DeleteRepice()
+    {
+        MySqlConnection con = new MySqlConnection();
+        con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
+        con.Open();
+
+        string sql = $"DELETE FROM `repice` WHERE `nameOfRepice` = '{nameOfRepice}'";
+
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.Connection = con;
+        cmd.CommandText = sql;
+
+        int x = cmd.ExecuteNonQuery();
+
+        if (x > 0)
+        {
+            Console.WriteLine("Recipe Deleted");
+        }
+        else
+        {
+            Console.WriteLine("Recipe Not Found");
+        }
+
+        con.Close();
+    }
+}
