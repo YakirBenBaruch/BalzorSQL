@@ -1,0 +1,39 @@
+﻿@page "/InsertRepice"
+@using MySql.Data.MySqlClient;
+
+<h1>Insert Repice</h1>
+<h1> Name Of Repice</h1>
+<input type="text" @bind="nameOfRepice" />
+<h1> Groceries</h1>
+<input type="text" @bind="groceries" />
+<h1> Preparation Process</h1>
+<input type="text" @bind="preparationProcess" />
+<h1> Perparation Tools</h1>
+<input type="text" @bind="perparationTools" />
+<h1> Recipecol</h1>
+<input type="text" @bind="recipecol" />
+<button @onclick="InsertRepice">Insert Repice</button>
+
+@code
+{
+    string nameOfRepice;
+    string groceries;
+    string preparationProcess;
+    string perparationTools;
+    string recipecol;
+    void InsertRepice()
+    {
+        MySqlConnection con = new MySqlConnection();
+        con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
+        con.Open();
+        string sql = $"INSERT INTO `yakir_trading_app`.`repice` (`nameOfRepice`, `groceries`, `preparationProcess`, `perparationTools`, `recipecol`) VALUES ('{nameOfRepice}', '{groceries}', '{preparationProcess}', '{perparationTools}', '{recipecol}');";
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.Connection = con;
+        cmd.CommandText = sql;
+        int x = cmd.ExecuteNonQuery();
+        if (x > 0)
+        {
+            Console.WriteLine("Data Inserted");
+        }
+    }
+}
