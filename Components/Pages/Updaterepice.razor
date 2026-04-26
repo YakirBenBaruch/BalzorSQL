@@ -136,13 +136,13 @@
         con.Open();
 
         string sql = $@"
-        UPDATE `repice`
+        UPDATE `recipe`
         SET
-            `groceries` = '{groceries}',
-            `preparationProcess` = '{preparationProcess}',
-            `perparationTools` = '{perparationTools}',
-            `recipecol` = '{recipecol}'
-        WHERE `nameOfRepice` = '{nameOfRepice}'";
+            `Groceries` = '{groceries}',
+            `Preparation Process` = '{preparationProcess}',
+            `Perparation Tools` = '{perparationTools}',
+            `Recipecol` = '{recipecol}'
+        WHERE `Name Of Recipe` = '{nameOfRepice}'";
 
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = con;

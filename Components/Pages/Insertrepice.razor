@@ -41,7 +41,6 @@
         .register-header p {
             margin-top: 10px;
             font-size: 16px;
-            opacity: 0.95;
         }
 
     .register-body {
@@ -68,15 +67,7 @@
             font-size: 15px;
             background-color: #fffaf7;
             box-sizing: border-box;
-            transition: 0.3s;
         }
-
-            .form-group input:focus {
-                outline: none;
-                border-color: #ff7b54;
-                box-shadow: 0 0 10px rgba(255, 123, 84, 0.25);
-                background-color: white;
-            }
 
     .register-btn {
         width: 100%;
@@ -88,14 +79,8 @@
         font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        transition: 0.3s;
         margin-top: 10px;
     }
-
-        .register-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 123, 84, 0.3);
-        }
 
     .bottom-text {
         text-align: center;
@@ -119,6 +104,7 @@
         </div>
 
         <div class="register-body">
+
             <div class="form-group">
                 <label>Name Of Recipe</label>
                 <input type="text" @bind="nameOfRepice" placeholder="Enter recipe name" />
@@ -135,7 +121,7 @@
             </div>
 
             <div class="form-group">
-                <label>Preparation Tools</label>
+                <label>Perparation Tools</label>
                 <input type="text" @bind="perparationTools" placeholder="Enter preparation tools" />
             </div>
 
@@ -144,7 +130,7 @@
                 <input type="text" @bind="recipecol" placeholder="Enter recipecol" />
             </div>
 
-            <button class="register-btn" @onclick="Insertrepice">Insert Recipe</button>
+            <button class="register-btn" @onclick="insertrepice">Insert Recipe</button>
 
             <div class="bottom-text">
                 Save your favorite recipe and keep building your cookbook
@@ -161,22 +147,29 @@
     string perparationTools;
     string recipecol;
 
-    void Insertrepice()
+    void insertrepice()
     {
         MySqlConnection con = new MySqlConnection();
         con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
         con.Open();
 
-        string sql = $"INSERT INTO `yakir_trading_app`.`repice` (`nameOfRepice`, `groceries`, `preparationProcess`, `perparationTools`, `recipecol`) VALUES ('{nameOfRepice}', '{groceries}', '{preparationProcess}', '{perparationTools}', '{recipecol}');";
+        string sql = $"INSERT INTO `yakir_trading_app`.`recipe` " +
+                     $"(`Name Of Recipe`, `Groceries`, `Preparation Process`, `Perparation Tools`, `Recipecol`) " +
+                     $"VALUES ('{nameOfRepice}', '{groceries}', '{preparationProcess}', '{perparationTools}', '{recipecol}');";
 
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = con;
         cmd.CommandText = sql;
 
         int x = cmd.ExecuteNonQuery();
+
         if (x > 0)
         {
             Console.WriteLine("Data Inserted");
+        }
+        else
+        {
+            Console.WriteLine("Error");
         }
 
         con.Close();

@@ -109,7 +109,7 @@
         con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
         con.Open();
 
-        string sql = $"DELETE FROM `repice` WHERE `nameOfRepice` = '{nameOfRepice}'";
+        string sql = $"DELETE FROM `recipe` WHERE `Name Of Recipe` = '{nameOfRepice}'";
 
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = con;

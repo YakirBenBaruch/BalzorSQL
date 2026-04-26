@@ -1,5 +1,6 @@
 ﻿@page "/Login"
 @using MySql.Data.MySqlClient
+@inject NavigationManager nav
 
 <style>
     body {
@@ -169,7 +170,7 @@
         int x = cmd.ExecuteNonQuery();
         if (x > 0)
         {
-            Console.WriteLine("Data Inserted");
+            nav.NavigateTo("/HomeRepice");
         }
         else
         {

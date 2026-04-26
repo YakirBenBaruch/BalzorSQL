@@ -1,0 +1,149 @@
+﻿@page "/HomeRepice"
+
+<style>
+    .home-page {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #fff8f0, #ffe8d6);
+    }
+
+    .home-card {
+        width: 100%;
+        max-width: 900px;
+        background: white;
+        border-radius: 30px;
+        box-shadow: 0 20px 45px rgba(0,0,0,0.18);
+        overflow: hidden;
+    }
+
+    .home-header {
+        background: linear-gradient(135deg, #ff7b54, #ffb26b);
+        color: white;
+        text-align: center;
+        padding: 45px 25px;
+    }
+
+        .home-header h1 {
+            margin: 0;
+            font-size: 42px;
+        }
+
+        .home-header p {
+            margin-top: 12px;
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+    .home-body {
+        padding: 35px;
+    }
+
+    .links-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+    }
+
+    .link-card {
+        text-decoration: none;
+        color: #333;
+        background: #fffaf7;
+        border: 2px solid #f3d2c1;
+        border-radius: 22px;
+        padding: 28px 20px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+        .link-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(255, 123, 84, 0.25);
+            border-color: #ff7b54;
+            background: #fff2eb;
+        }
+
+    .icon {
+        font-size: 45px;
+        margin-bottom: 12px;
+    }
+
+    .link-card h2 {
+        margin: 8px 0;
+        font-size: 24px;
+        color: #ff7b54;
+    }
+
+    .link-card p {
+        margin: 0;
+        font-size: 15px;
+        color: #666;
+    }
+
+    .success-text {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 18px;
+        color: #4caf50;
+        font-weight: bold;
+    }
+
+    @@media (max-width: 700px) {
+        .links-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .home-header h1 {
+        font-size: 32px;
+    }
+
+    }
+</style>
+
+<div class="home-page">
+    <div class="home-card">
+        <div class="home-header">
+            <h1>🍲 Home Recipe</h1>
+            <p>Welcome to your recipe management system</p>
+        </div>
+
+        <div class="home-body">
+            <div class="success-text">
+                Registration completed successfully!
+            </div>
+
+            <div class="links-grid">
+
+                <a class="link-card" href="/InsertRepice">
+                    <div class="icon">➕</div>
+                    <h2>Add Recipe</h2>
+                    <p>Add a new recipe to the database</p>
+                </a>
+
+                <a class="link-card" href="/GetAllRepice">
+                    <div class="icon">📋</div>
+                    <h2>Show Recipes</h2>
+                    <p>View all recipes from the database</p>
+                </a>
+
+                <a class="link-card" href="/UpdateRepice">
+                    <div class="icon">✏️</div>
+                    <h2>Update Recipe</h2>
+                    <p>Edit an existing recipe</p>
+                </a>
+
+                <a class="link-card" href="/DeleteRepice">
+                    <div class="icon">🗑️</div>
+                    <h2>Delete Recipe</h2>
+                    <p>Remove a recipe from the database</p>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
