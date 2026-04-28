@@ -77,6 +77,27 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(255, 77, 77, 0.3);
         }
+
+    /* כפתור חזרה */
+    .home-btn {
+        display: block;
+        width: 100%;
+        margin-top: 15px;
+        padding: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #444, #777);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        box-sizing: border-box;
+    }
+
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        }
 </style>
 
 <div class="register-page">
@@ -95,6 +116,9 @@
             <button class="register-btn" @onclick="DeleteRepice">
                 Delete Recipe
             </button>
+
+            <!-- כפתור חזרה -->
+            <a href="/HomeRepice" class="home-btn">Back To Home</a>
         </div>
     </div>
 </div>

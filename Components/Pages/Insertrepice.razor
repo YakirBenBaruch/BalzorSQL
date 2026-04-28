@@ -82,6 +82,26 @@
         margin-top: 10px;
     }
 
+    .home-btn {
+        display: block;
+        width: 100%;
+        margin-top: 15px;
+        padding: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #444, #777);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        box-sizing: border-box;
+    }
+
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        }
+
     .bottom-text {
         text-align: center;
         margin-top: 18px;
@@ -132,8 +152,10 @@
 
             <button class="register-btn" @onclick="insertrepice">Insert Recipe</button>
 
+            <a href="/HomeRepice" class="home-btn">Back To Home</a>
+
             <div class="bottom-text">
-                Save your favorite recipe and keep building your cookbook
+                @msg
             </div>
         </div>
     </div>
@@ -146,6 +168,7 @@
     string preparationProcess;
     string perparationTools;
     string recipecol;
+    string msg = "Save your favorite recipe and keep building your cookbook";
 
     void insertrepice()
     {
@@ -165,11 +188,11 @@
 
         if (x > 0)
         {
-            Console.WriteLine("Data Inserted");
+            msg = "Recipe inserted successfully!";
         }
         else
         {
-            Console.WriteLine("Error");
+            msg = "Failed to insert recipe. Please try again.";
         }
 
         con.Close();
