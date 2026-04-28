@@ -1,35 +1,133 @@
 ﻿@page "/getall"
 @using MySql.Data.MySqlClient
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #fff8f0, #ffe8d6);
+    }
 
-        @while (r.Read())
-        {
-            string name = r["Username"].ToString();
-            string pass = r["UserPassword"].ToString();
-            int id = int.Parse(r["UserID"].ToString());
-            string email = r["UserEmail"].ToString();
-            string nickName = r["nickName"].ToString();
+    .page-container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 30px;
+    }
 
-            <tr>
-                <td>@id</td>
-                <td>@name</td>
-                <td>@pass</td>
-                <td>@email</td>
-                <td>@nickName</td>
-            </tr>
+    .card {
+        width: 100%;
+        max-width: 1100px;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #4caf50, #81c784);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+        .card-header h1 {
+            margin: 0;
+            font-size: 36px;
         }
 
-    </tbody>
-</table>
+    .card-body {
+        padding: 30px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    th {
+        background: #e8f5e9;
+        color: #333;
+        padding: 14px;
+        text-align: left;
+    }
+
+    td {
+        padding: 14px;
+        border-bottom: 1px solid #eee;
+        background-color: #fafafa;
+    }
+
+    tr:hover td {
+        background-color: #f1f8f4;
+    }
+
+    .home-btn {
+        display: block;
+        width: 200px;
+        margin: 20px auto 0;
+        padding: 12px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #444, #777);
+        color: white;
+        font-weight: bold;
+    }
+
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+        }
+</style>
+
+<div class="page-container">
+    <div class="card">
+        <div class="card-header">
+            <h1>All Users</h1>
+        </div>
+
+        <div class="card-body">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Password</th>
+                        <th>Email</th>
+                        <th>Nickname</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @while (r != null && r.Read())
+                    {
+                        string name = r["Username"].ToString();
+                        string pass = r["UserPasswordl"].ToString();
+                        int id = int.Parse(r["UserID"].ToString());
+                        string email = r["UserEmail"].ToString();
+                        string nickName = r["nickName"].ToString();
+
+                        <tr>
+                            <td>@id</td>
+                            <td>@name</td>
+                            <td>@pass</td>
+                            <td>@email</td>
+                            <td>@nickName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <a href="/HomeRepice" class="home-btn">Back To Home</a>
+        </div>
+
+    </div>
+</div>
 
 @code
 {

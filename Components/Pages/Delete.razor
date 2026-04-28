@@ -29,32 +29,36 @@
         padding: 20px;
     }
 
-        /* Card */
-        body::before {
-            content: "";
-            position: fixed;
-            width: min(500px,90vw);
-            height: 280px;
-            background: var(--card);
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(12px);
-        }
+    body::before {
+        content: "";
+        position: fixed;
+        width: min(500px,90vw);
+        height: 360px;
+        background: var(--card);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+    }
 
-        /* Title */
-        body::after {
-            content: "Delete User";
-            position: fixed;
-            top: calc(50% - 120px);
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: .4px;
-        }
+    body::after {
+        content: "Delete User";
+        position: fixed;
+        top: calc(50% - 150px);
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
+        font-weight: 800;
+    }
 
-    /* Input */
+    .form-container {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     input[type="text"] {
         width: min(420px,85vw);
         padding: 14px;
@@ -63,21 +67,8 @@
         border: 1px solid var(--border);
         background: rgba(15,23,42,.75);
         color: var(--text);
-        outline: none;
-        transition: .2s;
-        box-shadow: 0 10px 25px rgba(0,0,0,.3);
     }
 
-        input[type="text"]::placeholder {
-            color: var(--muted);
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--danger);
-            box-shadow: 0 0 0 4px rgba(239,68,68,.25);
-        }
-
-    /* Button */
     button {
         width: min(420px,85vw);
         padding: 14px;
@@ -88,46 +79,83 @@
         cursor: pointer;
         color: #fff;
         background: linear-gradient(180deg,var(--danger),var(--danger-dark));
-        box-shadow: 0 18px 40px rgba(239,68,68,.35);
-        transition: .2s;
     }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 22px 50px rgba(239,68,68,.45);
-        }
+    .home-btn {
+        width: min(420px,85vw);
+        padding: 14px;
+        margin-top: 12px;
+        border-radius: 14px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(180deg,#444,#777);
+        display: block;
+    }
 
-        button:active {
-            transform: translateY(1px);
-        }
+    .home-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .bottom-text {
+        margin-top: 15px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .success {
+        color: #22c55e;
+    }
+
+    .error {
+        color: #ef4444;
+    }
 </style>
 
-<div style="position:relative; z-index:1; display:flex; flex-direction:column; align-items:center;">
+<div class="form-container">
     <input type="text" @bind="userId" placeholder="Enter the userId that you want to delete" />
+
     <button @onclick="DELETE">Submit</button>
+
+    <a href="/HomeRepice" class="home-btn">Back To Home</a>
+
+    <div class="bottom-text">
+        <span class="@(msg.Contains("Success") ? "success" : "error")">
+            @msg
+        </span>
+    </div>
 </div>
 
 @code
 {
     string userId;
+    string msg = "";
+
     void DELETE()
     {
         MySqlConnection con = new MySqlConnection();
-        con.ConnectionString = "server=localhost;user id =root;password=josh17rog;database=yakir_trading_app";
+        con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
         con.Open();
 
-        string Sql2 = $"DELETE FROM `yakir_trading_app`.`users` WHERE(`userId` = {userId});";
+        string Sql2 = $"DELETE FROM `yakir_trading_app`.`users` WHERE `userId` = '{userId}';";
+
         MySqlCommand cmd2 = new MySqlCommand();
         cmd2.Connection = con;
         cmd2.CommandText = Sql2;
+
         int x = cmd2.ExecuteNonQuery();
+
         if (x > 0)
         {
-            Console.WriteLine("Data Inserted");
+            msg = "User Deleted Successfully";
         }
         else
         {
-            Console.WriteLine("Data Not Inserted");
+            msg = "Error Deleting User";
         }
+
+        con.Close();
     }
 }

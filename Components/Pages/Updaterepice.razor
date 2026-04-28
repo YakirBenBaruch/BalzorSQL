@@ -78,7 +78,6 @@
             box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
         }
 
-    /* כפתור חזרה */
     .home-btn {
         display: block;
         width: 100%;
@@ -138,10 +137,12 @@
                 Update Recipe
             </button>
 
-            <!-- כפתור חזרה -->
             <a href="/HomeRepice" class="home-btn">Back To Home</a>
 
         </div>
+    </div>
+    <div class="bottom-text">
+        @msg
     </div>
 </div>
 
@@ -152,6 +153,7 @@
     string preparationProcess;
     string perparationTools;
     string recipecol;
+    string msg = "";
 
     void UpdateRepice()
     {
@@ -176,11 +178,11 @@
 
         if (x > 0)
         {
-            Console.WriteLine("Recipe Updated");
+            msg = "Recipe Updated Successfully!";
         }
         else
         {
-            Console.WriteLine("Recipe Not Found");
+            msg = "No recipe found with that name.";
         }
 
         con.Close();

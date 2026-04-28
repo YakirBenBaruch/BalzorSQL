@@ -13,7 +13,7 @@
 
     .home-card {
         width: 100%;
-        max-width: 900px;
+        max-width: 1100px;
         background: white;
         border-radius: 30px;
         box-shadow: 0 20px 45px rgba(0,0,0,0.18);
@@ -44,7 +44,7 @@
 
     .links-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 22px;
     }
 
@@ -92,16 +92,13 @@
     }
 
     @@media (max-width: 700px) {
-        .links-grid
+        .links-grid {
+            grid-template-columns: 1fr;
+        }
 
-    {
-        grid-template-columns: 1fr;
-    }
-
-    .home-header h1 {
-        font-size: 32px;
-    }
-
+        .home-header h1 {
+            font-size: 32px;
+        }
     }
 </style>
 
@@ -119,6 +116,7 @@
 
             <div class="links-grid">
 
+                <!-- Recipes -->
                 <a class="link-card" href="/InsertRepice">
                     <div class="icon">➕</div>
                     <h2>Add Recipe</h2>
@@ -141,6 +139,31 @@
                     <div class="icon">🗑️</div>
                     <h2>Delete Recipe</h2>
                     <p>Remove a recipe from the database</p>
+                </a>
+
+                <!-- Users -->
+                <a class="link-card" href="/INSERT">
+                    <div class="icon">👤➕</div>
+                    <h2>Add User</h2>
+                    <p>Create a new user</p>
+                </a>
+
+                <a class="link-card" href="/getall">
+                    <div class="icon">👥</div>
+                    <h2>Show Users</h2>
+                    <p>View all users</p>
+                </a>
+
+                <a class="link-card" href="/Update">
+                    <div class="icon">🔐</div>
+                    <h2>Update User</h2>
+                    <p>Change user password</p>
+                </a>
+
+                <a class="link-card" href="/Delete">
+                    <div class="icon">🗑️</div>
+                    <h2>Delete User</h2>
+                    <p>Remove user from database</p>
                 </a>
 
             </div>

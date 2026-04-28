@@ -145,6 +145,9 @@
             <div class="bottom-text">
                 Join our cooking community and discover amazing recipes
             </div>
+            <div class="bottom-text">
+                @msg
+            </div>
         </div>
     </div>
 </div>
@@ -155,6 +158,7 @@
     string userPasswordl;
     string userEmail;
     string usernickName;
+    string msg = "";
 
     void login()
     {
@@ -171,10 +175,11 @@
         if (x > 0)
         {
             nav.NavigateTo("/HomeRepice");
+            msg = "User registered successfully!";
         }
         else
         {
-            Console.WriteLine("Data Not Inserted");
+            msg = "Registration failed. Please try again.";
         }
 
         con.Close();

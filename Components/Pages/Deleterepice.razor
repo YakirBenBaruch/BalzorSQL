@@ -78,7 +78,6 @@
             box-shadow: 0 10px 20px rgba(255, 77, 77, 0.3);
         }
 
-    /* כפתור חזרה */
     .home-btn {
         display: block;
         width: 100%;
@@ -117,15 +116,18 @@
                 Delete Recipe
             </button>
 
-            <!-- כפתור חזרה -->
             <a href="/HomeRepice" class="home-btn">Back To Home</a>
         </div>
+    </div>
+    <div class="bottom-text">
+        @msg
     </div>
 </div>
 
 @code
 {
     string nameOfRepice;
+    string msg = "";
 
     void DeleteRepice()
     {
@@ -143,11 +145,11 @@
 
         if (x > 0)
         {
-            Console.WriteLine("Recipe Deleted");
+            msg = "Recipe Deleted Successfully";
         }
         else
         {
-            Console.WriteLine("Recipe Not Found");
+            msg = "No recipe found with that name";
         }
 
         con.Close();
