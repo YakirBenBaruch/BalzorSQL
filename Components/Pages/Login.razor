@@ -1,6 +1,6 @@
-﻿@page "/Login"
+﻿@page "/login"
 @using MySql.Data.MySqlClient
-@inject NavigationManager nav
+@inject NavigationManager NavManager
 
 <style>
     body {
@@ -10,7 +10,7 @@
         background: linear-gradient(135deg, #fff8f0, #ffe8d6);
     }
 
-    .register-page {
+    .login-page {
         min-height: 100vh;
         display: flex;
         justify-content: center;
@@ -18,7 +18,7 @@
         padding: 30px;
     }
 
-    .register-card {
+    .login-card {
         width: 100%;
         max-width: 500px;
         background: white;
@@ -27,25 +27,19 @@
         overflow: hidden;
     }
 
-    .register-header {
+    .login-header {
         background: linear-gradient(135deg, #ff7b54, #ffb26b);
         color: white;
         text-align: center;
         padding: 35px 20px;
     }
 
-        .register-header h1 {
+        .login-header h3 {
             margin: 0;
-            font-size: 36px;
+            font-size: 32px;
         }
 
-        .register-header p {
-            margin-top: 10px;
-            font-size: 16px;
-            opacity: 0.95;
-        }
-
-    .register-body {
+    .login-body {
         padding: 35px 30px;
     }
 
@@ -69,17 +63,9 @@
             font-size: 15px;
             background-color: #fffaf7;
             box-sizing: border-box;
-            transition: 0.3s;
         }
 
-            .form-group input:focus {
-                outline: none;
-                border-color: #ff7b54;
-                box-shadow: 0 0 10px rgba(255, 123, 84, 0.25);
-                background-color: white;
-            }
-
-    .register-btn {
+    .login-btn {
         width: 100%;
         padding: 15px;
         border: none;
@@ -89,99 +75,105 @@
         font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        transition: 0.3s;
-        margin-top: 10px;
     }
 
-        .register-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 123, 84, 0.3);
-        }
-
-    .bottom-text {
+    .home-btn {
+        display: block;
+        width: 100%;
+        margin-top: 15px;
+        padding: 15px;
         text-align: center;
-        margin-top: 18px;
-        color: #777;
-        font-size: 14px;
+        text-decoration: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #444, #777);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        box-sizing: border-box;
     }
 
-    .food-icon {
-        font-size: 42px;
-        margin-bottom: 10px;
+    .error-text {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+        margin-top: 18px;
     }
 </style>
 
-<div class="register-page">
-    <div class="register-card">
-        <div class="register-header">
-            <div class="food-icon">🍳</div>
-            <h1>Recipe Register</h1>
-            <p>Create your account and start sharing delicious recipes</p>
+<div class="login-page">
+    <div class="login-card">
+        <div class="login-header">
+            <h3>דף התחברות (דידקטי)</h3>
         </div>
 
-        <div class="register-body">
+        <div class="login-body">
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" @bind="userName" placeholder="Enter your username" />
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" @bind="userPasswordl" placeholder="Enter your password" />
+                <label>שם משתמש:</label>
+                <input type="text" @bind="inputUser" />
             </div>
 
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" @bind="userEmail" placeholder="Enter your email" />
+                <label>סיסמה:</label>
+                <input type="password" @bind="inputPass" />
             </div>
 
-            <div class="form-group">
-                <label>Nickname</label>
-                <input type="text" @bind="usernickName" placeholder="Enter your nickname" />
-            </div>
+            <button class="login-btn" @onclick="CheckLogin">התחבר</button>
 
-            <button class="register-btn" @onclick="login">Sign Up</button>
+            <a href="/HomeRepice" class="home-btn">Back To Home</a>
 
-            <div class="bottom-text">
-                Join our cooking community and discover amazing recipes
-            </div>
-            <div class="bottom-text">
-                @msg
-            </div>
+            <p class="error-text">@errorMessage</p>
         </div>
     </div>
 </div>
 
 @code
 {
-    string userName;
-    string userPasswordl;
-    string userEmail;
-    string usernickName;
-    string msg = "";
+    private string inputUser;
+    private string inputPass;
+    private string errorMessage;
+    private MySqlDataReader r;
 
-    void login()
+    private void CheckLogin()
     {
+        // הגדרת חיבור
         MySqlConnection con = new MySqlConnection();
-        con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app";
+        con.ConnectionString = "server=localhost;user id=root;password=josh17rog;database=yakir_trading_app;";
         con.Open();
 
-        string sql = $"INSERT INTO `yakir_trading_app`.`users` (`userName`, `userPasswordl`, `userEmail`, `nickName`) VALUES ('{userName}', '{userPasswordl}', '{userEmail}', '{usernickName}');";
+        // שאילתה לקבלת כל המשתמשים
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = con;
-        cmd.CommandText = sql;
+        cmd.CommandText = "SELECT * FROM yakir_trading_app.users;";
 
-        int x = cmd.ExecuteNonQuery();
-        if (x > 0)
+        r = cmd.ExecuteReader();
+
+        bool isAuthenticated = false;
+
+        // מעבר על כל המשתמשים בלולאת while
+        while (r.Read())
         {
-            nav.NavigateTo("/HomeRepice");
-            msg = "User registered successfully!";
+            string dbName = r["Username"].ToString();
+            string dbPass = r["UserPasswordl"].ToString();
+
+            // בדיקה האם הקלט תואם לאחד המשתמשים בטבלה
+            if (dbName == inputUser && dbPass == inputPass)
+            {
+                isAuthenticated = true;
+                break; // מצאנו משתמש, אפשר לצאת מהלולאה
+            }
+        }
+
+        r.Close();
+        con.Close();
+
+        if (isAuthenticated)
+        {
+            // העברה לדף אחר ל לא שימוש ב-Session או הגנה
+            NavManager.NavigateTo("/dashboard");
         }
         else
         {
-            msg = "Registration failed. Please try again.";
+            errorMessage = "שם משתמש או סיסמה שגויים.";
         }
-
-        con.Close();
     }
 }
